@@ -1,5 +1,3 @@
-# Interview Notes
-
 Whenever interviewer says
 
 - Lifetime
