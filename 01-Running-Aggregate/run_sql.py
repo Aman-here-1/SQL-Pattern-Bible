@@ -8,7 +8,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DB_PATH = ROOT / "database" / "zomato.db"
 
 # SQL File
-SQL_FILE = Path(__file__).resolve().parent / "01_dau.sql"
+SQL_FILE = Path(__file__).resolve().parent / "question.sql"
 
 con = duckdb.connect(str(DB_PATH))
 

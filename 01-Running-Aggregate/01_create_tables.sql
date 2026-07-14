@@ -1,1 +1,0 @@
-select * from app_open_events
