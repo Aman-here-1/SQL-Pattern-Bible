@@ -65,80 +65,30 @@ ORDER BY d.month_start;
 -- Top 5 Cities by Stickiness
 
 WITH daily_active_users AS (
-
     SELECT
-
         city,
-
         DATE_TRUNC('month', event_date) AS month_start,
-
         AVG(dau) AS avg_dau
-
     FROM (
-
         SELECT
-
-            event_date,
-
-            city,
-
-            COUNT(DISTINCT user_id) AS dau
-
+            event_date, city, COUNT(DISTINCT user_id) AS dau
         FROM app_open_events
-
-        GROUP BY
-            event_date,
-            city
-
+        GROUP BY event_date, city
     ) d
-
     GROUP BY
-        city,
-        month_start
-
+        city, month_start
 ),
-
 monthly_active_users AS (
-
     SELECT
-
-        city,
-
-        DATE_TRUNC('month', event_date) AS month_start,
-
-        COUNT(DISTINCT user_id) AS mau
-
+        city, DATE_TRUNC('month', event_date) AS month_start, COUNT(DISTINCT user_id) AS mau
     FROM app_open_events
-
-    GROUP BY
-        city,
-        month_start
-
+    GROUP BY city, month_start
 )
-
 SELECT
-
-    d.city,
-
-    d.month_start,
-
-    ROUND(d.avg_dau,2) AS avg_dau,
-
-    m.mau,
-
-    ROUND(
-        d.avg_dau * 100.0 / m.mau,
-        2
-    ) AS stickiness_percent
-
+    d.city, d.month_start, ROUND(d.avg_dau,2) AS avg_dau, m.mau, ROUND(d.avg_dau * 100.0 / m.mau, 2) AS stickiness_percent
 FROM daily_active_users d
-
 JOIN monthly_active_users m
-
 ON d.city = m.city
 AND d.month_start = m.month_start
-
-ORDER BY
-    stickiness_percent DESC
-
+ORDER BY stickiness_percent DESC
 LIMIT 5;
